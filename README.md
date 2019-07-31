@@ -1,4 +1,4 @@
-![](resouse/logo.png)
+![image](resouse/logo.png)
 
 **通过黑白图片的情景语义找到颜色和结构纹理特征的映射,将黑白影片彩色化**
 
