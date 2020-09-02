@@ -5,15 +5,19 @@ import threading
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-'''多线程将数据集中图片缩放后再裁切到256*256分辨率'''
-def convertjpg(jpgfile,outdir,width=256,height=256):
+'''多线程将数据集中图片缩放后再裁切到512*512分辨率'''
+def convertjpg(jpgfile,outdir,width=512,height=512):
     img=Image.open(jpgfile)
     (l,h) = img.size
     rate = min(l,h) / width
+    if outdir == None:
+        outdir = jpgfile
+    else:
+        outdir = os.path.join(outdir,os.path.basename(jpgfile))
     try:
         img = img.resize((int(l // rate),int(h // rate)),Image.BILINEAR)
         img = img.crop((0,0,width,height))
-        img.save(os.path.join(outdir,os.path.basename(jpgfile)))
+        img.save(outdir)
     except Exception as e:
         print(e)
 
@@ -39,7 +43,7 @@ def cutArray(l, num):
   return o
 
 if __name__ == '__main__':
-    path = '../data/test/'
+    path = '../dataset/test/'
     files =  os.listdir(path)
     files = cutArray(files,8)
     T1 = thread(1, path, files[0])

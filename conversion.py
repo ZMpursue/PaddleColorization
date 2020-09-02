@@ -31,17 +31,20 @@ def video2photo(videoName = './movie/input.mp4'):
     else:
         rval = False
     while rval:
-        rval,frame = video.read()
-        cv2.imwrite('./cache/input_img/' + str(n) + '.jpg',frame)
-        n = n + 1
-        cv2.waitKey(1)
+        try:
+            rval,frame = video.read()
+            cv2.imwrite('./cache/input_img/' + str(n) + '.jpg',frame)
+            n = n + 1
+            cv2.waitKey(1)
+        except Exception as e:
+            break
     video.release()
     print('[*] 视频转换图片成功...')
 
 
 
 
-def photo2video(videoName = './movie/output.mp4',fps = 25,imgs = './cache/output_img'):
+def photo2video(videoName = './cache/output.mp4',fps = 25,imgs = './cache/output_img'):
     '''将图片转换为视频，图片读取路径./cache/output_img.mp4，视频默认写入路径./movie/output.mp4，待合成图片默认文件夹路径./cache/output_img
     INPUTS
         videoName   视频写入路径
@@ -69,7 +72,7 @@ def photo2video(videoName = './movie/output.mp4',fps = 25,imgs = './cache/output
         os.remove('./movie/output.mkv')
     command = 'ffmpeg -i ./movie/output.mp4 -i ./cache/audio/audio.wav -c copy ./movie/output.mkv'
     subprocess.call(command,shell=True,stdout= open('/dev/null','w'),stderr=subprocess.STDOUT)
-    os.remove('./movie/output.mp4')
+    #os.remove('./cache/output.mp4')
     print('[*] 生成视频成功，路径为./cache/output.mkv')
 
 
@@ -77,5 +80,4 @@ def photo2video(videoName = './movie/output.mp4',fps = 25,imgs = './cache/output
 
 '''test'''
 if __name__ == '__main__':
-    video2photo()
-    photo2video(imgs='./cache/input_img')
+    photo2video(imgs='./cache/output_img')

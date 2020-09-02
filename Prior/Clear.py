@@ -45,7 +45,7 @@ class thread(threading.Thread):
         deleteErrorImage(self.path, self.files)
 
 if __name__ == '__main__':
-    path = '../data/train/'
+    path = '../dataset/test/'
     files = os.listdir(path)
     files = cutArray(files,8)
     T1 = thread(1, path, files[0])

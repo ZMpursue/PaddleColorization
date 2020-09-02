@@ -8,8 +8,8 @@ import sklearn.neighbors as neighbors
 
 '''准备数据，定义Reader()'''
 
-PATH = '../data/test/'
-TEST = '../data/test/'
+PATH = '../data/train/'
+TEST = '../data/train/'
 Q = np.load('../Prior/Q.npy')
 Weight = np.load('../Prior/Weight.npy')
 
@@ -26,7 +26,7 @@ class DataGenerater:
         lab = np.array(color.rgb2lab(img)).transpose()
         #mini = np.array(color.rgb2lab(mini)).transpose()
         l = lab[:1,:,:]
-        ab = (lab[1:,:,:] + 128) / 255
+        ab = lab[1:,:,:]
         return l,ab
 
     def mask(self,ls,abs,ws):
@@ -45,10 +45,10 @@ class DataGenerater:
             x,y = self.lab2Q(d[i],n[i])
             X = np.append(X, x)
             Y = np.append(Y, y)
-        w = w.reshape([1,256,256])
-        X = X.reshape([1,256,256])
-        Y = Y.reshape([1,256,256])
-        q = np.zeros([2,256,256])
+        w = w.reshape([1,512,512])
+        X = X.reshape([1,512,512])
+        Y = Y.reshape([1,512,512])
+        q = np.zeros([2,512,512])
         q[0] = X
         q[1] = Y
         return w,q
@@ -84,9 +84,9 @@ class DataGenerater:
     def _2d_to_nd(self,i,axis=1):
         '''将2维np数组转换为N维'''
 
-        a = i[:,:1].transpose().reshape([256,256])
-        b = i[:,1:2].transpose().reshape([256,256])
-        ab = np.zeros([2,256,256])
+        a = i[:,:1].transpose().reshape([512])
+        b = i[:,1:2].transpose().reshape([512,512])
+        ab = np.zeros([2,512,512])
         ab[0] = a
         ab[1] = b
         return ab
@@ -103,8 +103,7 @@ class DataGenerater:
                 #print(img)
                 try:
                     l, ab = self.load(PATH + img)
-                    w, q = self.weightArray(ab)
-                    yield l.astype('float32'), w.astype('float32'), q.astype('float32')
+                    yield l.astype('float32'), ab.astype('float32')
                 except Exception as e:
                     print(e)
 

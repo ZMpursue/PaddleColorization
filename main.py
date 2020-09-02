@@ -22,8 +22,8 @@ if __name__ == '__main__':
     elif args.img_in is None and args.movie_in is not None:
         print('[*] 正在转换中...')
         conversion.video2photo(videoName=args.movie_in)
-        cacheIN = './cache/input_img'
-        cacheOUT = './cache/ouput_img'
+        cacheIN = 'cache/input_img/'
+        cacheOUT = 'cache/output_img/'
         imgs =  os.listdir(cacheIN)
         for img in imgs:
             gray2color.run(input=cacheIN + img,output= cacheOUT + img)
