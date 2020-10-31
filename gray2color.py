@@ -20,7 +20,7 @@ def loadImage(image):
     img = io.imread(image)
     lab = np.array(color.rgb2lab(img)).transpose()
     l = lab[:1, :, :]
-    return l.reshape(1,1,512,512).astype('float32')
+    return l.reshape(1,1,256,256).astype('float32')
 
 
 def nd_to_2d( i, axis=0):
